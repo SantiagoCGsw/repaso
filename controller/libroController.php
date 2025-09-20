@@ -8,9 +8,22 @@ include("../model/libroModel.php");
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (isset($_POST["accion"])) {
         if ($_POST["accion"] === "insertar") {
-            insertarLibro($_POST["titulo"], $_POST["autor"]);
+            insertarLibro(
+                $_POST["titulo"],
+                $_POST["autor"],
+                $_POST["fecha_lectura"],
+                $_POST["terminado"],
+                $_POST["ultimo_capitulo"]
+            );
         } elseif ($_POST["accion"] === "editar") {
-            actualizarLibro($_POST["id"], $_POST["titulo"], $_POST["autor"]);
+            actualizarLibro(
+                $_POST["id"],
+                $_POST["titulo"],
+                $_POST["autor"],
+                $_POST["fecha_lectura"],
+                $_POST["terminado"],
+                $_POST["ultimo_capitulo"]
+            );
         }
         header("Location: ../view/lista.php");
         exit();
