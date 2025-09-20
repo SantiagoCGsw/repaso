@@ -3,7 +3,7 @@ name: 🚀 Deploy to InfinityFree
 on:
   push:
     branches:
-      - main
+      - main   # rama principal que dispara el deploy
 
 jobs:
   ftp-deploy:
@@ -12,10 +12,14 @@ jobs:
       - name: 📥 Checkout repo
         uses: actions/checkout@v3
 
-      - name: 📂 Upload to InfinityFree
+      - name: 📂 Upload to InfinityFree via FTP
         uses: SamKirkland/FTP-Deploy-Action@4.3.0
         with:
-          server: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USER }}
-          password: ${{ secrets.FTP_PASS }}
-          server-dir: htdocs/
+          server: ${{ secrets.FTP_HOST }}       # ftpupload.net
+          username: ${{ secrets.FTP_USER }}     # if0_39988467
+          password: ${{ secrets.FTP_PASS }}     # XA8LPv736JNX
+          server-dir: htdocs/                   # directorio donde subir tus archivos
+          local-dir: ./                          # carpeta raíz de tu repo
+          exclude: |
+            .github/**
+            README.md
