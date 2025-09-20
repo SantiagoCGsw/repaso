@@ -3,7 +3,7 @@ name: 🚀 Deploy to InfinityFree
 on:
   push:
     branches:
-      - main   # O la rama que uses como principal
+      - main
 
 jobs:
   ftp-deploy:
@@ -18,4 +18,4 @@ jobs:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASS }}
-          server-dir: htdocs/   # 👈 MUY IMPORTANTE: siempre dentro de htdocs
+          server-dir: htdocs/
