@@ -3,25 +3,19 @@ name: 🚀 Deploy to InfinityFree
 on:
   push:
     branches:
-      - main   # si tu rama es master cámbialo a master
+      - main   # O la rama que uses como principal
 
 jobs:
-  deploy:
+  ftp-deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
+      - name: 📥 Checkout repo
         uses: actions/checkout@v3
 
-      - name: 📂 Deploy to InfinityFree via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      - name: 📂 Upload to InfinityFree
+        uses: SamKirkland/FTP-Deploy-Action@4.3.0
         with:
-          server: ${{ vars.FTP_HOST }}
-          username: ${{ vars.FTP_USER }}
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASS }}
-          server-dir: /htdocs/   # InfinityFree siempre usa esta carpeta
-          local-dir: ./          # todo lo de tu repo
-          exclude: |
-            **/.git*
-            **/.github/**
-            README.md
+          server-dir: htdocs/   # 👈 MUY IMPORTANTE: siempre dentro de htdocs
