@@ -1,10 +1,4 @@
-<?php
-session_start();
-if (!isset($_SESSION["usuario"])) {
-    header("Location: login.php");
-    exit;
-}
-?>
+<?php include("../model/conexion.php"); ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -22,7 +16,7 @@ if (!isset($_SESSION["usuario"])) {
             <input type="text" name="titulo" placeholder="Título del libro" required>
 
             <label>Autor:</label>
-            <input type="text" name="autor" placeholder="Autor del libro" required>
+            <input type="text" name="autor" placeholder="Autor" required>
 
             <label>Fecha de lectura:</label>
             <input type="date" name="fecha_lectura">
@@ -33,13 +27,11 @@ if (!isset($_SESSION["usuario"])) {
                 <option value="1">Terminado</option>
             </select>
 
-            <label>Último capítulo:</label>
+            <label>Último capítulo leído:</label>
             <input type="text" name="ultimo_capitulo" placeholder="Último capítulo leído">
 
-            <button type="submit">Registrar Libro</button>
+            <input type="submit" value="Registrar Libro">
         </form>
-        <br>
-        <a href="lista.php">⬅ Volver a la lista</a>
     </div>
 </body>
 </html>
