@@ -1,9 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION["usuario"])) {
-    header("Location: view/login.php");
-    exit;
-}
+if (!isset($_SESSION["usuario"])) header("Location: view/login.php");
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -14,7 +11,7 @@ if (!isset($_SESSION["usuario"])) {
 </head>
 <body class="neon-body">
   <header>
-    <h1 class="neon-text">Bienvenido, <?php echo $_SESSION["usuario"]; ?> 🚀</h1>
+    <h1 class="neon-text">Bienvenido, <?= $_SESSION["usuario"] ?> 🚀</h1>
   </header>
   <section class="neon-box">
     <p>Desde aquí puedes gestionar tus libros.</p>
