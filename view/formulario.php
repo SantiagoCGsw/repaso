@@ -1,5 +1,4 @@
 <?php
-// formulario.php
 session_start();
 if (!isset($_SESSION["usuario"])) {
     header("Location: login.php");
@@ -17,7 +16,6 @@ if (!isset($_SESSION["usuario"])) {
     <div class="container">
         <h1>📚 Registrar Libro</h1>
         <form action="../controller/libroController.php" method="POST">
-            <!-- IMPORTANTE: hidden para que el controller sepa que es insertar -->
             <input type="hidden" name="accion" value="insertar">
 
             <label>Título:</label>
