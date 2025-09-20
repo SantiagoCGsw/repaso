@@ -1,68 +1,37 @@
 <?php
-include("conexion.php");
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-function obtenerLibros() {
-    global $conexion;
-    $resultado = mysqli_query($conexion, "SELECT * FROM libros");
-    if (!$resultado) {
-        die("Error al obtener libros: " . mysqli_error($conexion));
+include("../model/libroModel.php");
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $accion = $_POST["accion"] ?? "";
+    if ($accion === "insertar") {
+        insertarLibro(
+            $_POST["titulo"],
+            $_POST["autor"],
+            $_POST["fecha_lectura"] ?? null,
+            $_POST["terminado"] ?? 0,
+            $_POST["ultimo_capitulo"] ?? null
+        );
+    } elseif ($accion === "editar") {
+        actualizarLibro(
+            $_POST["id"],
+            $_POST["titulo"],
+            $_POST["autor"],
+            $_POST["fecha_lectura"] ?? null,
+            $_POST["terminado"] ?? 0,
+            $_POST["ultimo_capitulo"] ?? null
+        );
     }
-    return mysqli_fetch_all($resultado, MYSQLI_ASSOC);
+    header("Location: ../view/lista.php");
+    exit();
 }
 
-function insertarLibro($titulo, $autor, $fecha_lectura = null, $terminado = 0, $ultimo_capitulo = null) {
-    global $conexion;
-    $titulo = mysqli_real_escape_string($conexion, $titulo);
-    $autor = mysqli_real_escape_string($conexion, $autor);
-    $fecha_lectura = $fecha_lectura ? "'$fecha_lectura'" : "NULL";
-    $ultimo_capitulo = $ultimo_capitulo ? "'$ultimo_capitulo'" : "NULL";
-
-    $query = "INSERT INTO libros (titulo, autor, fecha_lectura, terminado, ultimo_capitulo)
-              VALUES ('$titulo', '$autor', $fecha_lectura, $terminado, $ultimo_capitulo)";
-    $resultado = mysqli_query($conexion, $query);
-    if (!$resultado) {
-        die("Error al insertar libro: " . mysqli_error($conexion));
-    }
-    return $resultado;
-}
-
-function obtenerLibro($id) {
-    global $conexion;
-    $id = intval($id);
-    $query = "SELECT * FROM libros WHERE id=$id";
-    $resultado = mysqli_query($conexion, $query);
-    if (!$resultado) {
-        die("Error al obtener libro: " . mysqli_error($conexion));
-    }
-    return mysqli_fetch_assoc($resultado);
-}
-
-function actualizarLibro($id, $titulo, $autor, $fecha_lectura = null, $terminado = 0, $ultimo_capitulo = null) {
-    global $conexion;
-    $id = intval($id);
-    $titulo = mysqli_real_escape_string($conexion, $titulo);
-    $autor = mysqli_real_escape_string($conexion, $autor);
-    $fecha_lectura = $fecha_lectura ? "'$fecha_lectura'" : "NULL";
-    $ultimo_capitulo = $ultimo_capitulo ? "'$ultimo_capitulo'" : "NULL";
-
-    $query = "UPDATE libros 
-              SET titulo='$titulo', autor='$autor', fecha_lectura=$fecha_lectura, terminado=$terminado, ultimo_capitulo=$ultimo_capitulo 
-              WHERE id=$id";
-    $resultado = mysqli_query($conexion, $query);
-    if (!$resultado) {
-        die("Error al actualizar libro: " . mysqli_error($conexion));
-    }
-    return $resultado;
-}
-
-function eliminarLibro($id) {
-    global $conexion;
-    $id = intval($id);
-    $query = "DELETE FROM libros WHERE id=$id";
-    $resultado = mysqli_query($conexion, $query);
-    if (!$resultado) {
-        die("Error al eliminar libro: " . mysqli_error($conexion));
-    }
-    return $resultado;
+if (isset($_GET["eliminar"])) {
+    eliminarLibro($_GET["eliminar"]);
+    header("Location: ../view/lista.php");
+    exit();
 }
 ?>
