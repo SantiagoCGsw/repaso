@@ -1,5 +1,11 @@
 <?php
+// Mostrar errores mientras depuramos
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 include("../model/libroModel.php");
+
 $libros = obtenerLibros();
 ?>
 <!DOCTYPE html>
@@ -12,7 +18,7 @@ $libros = obtenerLibros();
 <body>
     <div class="container">
         <h1>📖 Lista de Libros</h1>
-        <?php if (count($libros) > 0) : ?>
+        <a href="formulario.php" class="btn-neon">➕ Agregar Libro</a>
         <table>
             <tr>
                 <th>ID</th>
@@ -23,24 +29,25 @@ $libros = obtenerLibros();
                 <th>Último Capítulo</th>
                 <th>Acciones</th>
             </tr>
-            <?php foreach($libros as $fila) : ?>
+            <?php if (!empty($libros)) : ?>
+                <?php foreach($libros as $fila) : ?>
                 <tr>
                     <td><?= $fila["id"] ?></td>
-                    <td><?= $fila["titulo"] ?></td>
-                    <td><?= $fila["autor"] ?></td>
+                    <td><?= htmlspecialchars($fila["titulo"]) ?></td>
+                    <td><?= htmlspecialchars($fila["autor"]) ?></td>
                     <td><?= $fila["fecha_lectura"] ?? "—" ?></td>
-                    <td><?= $fila["terminado"] ? "✅ Terminado" : "📖 En progreso" ?></td>
+                    <td><?= ($fila["terminado"]) ? "✅ Terminado" : "📖 En progreso" ?></td>
                     <td><?= $fila["ultimo_capitulo"] ?? "—" ?></td>
                     <td>
-                        <a href="editar.php?id=<?= $fila['id'] ?>">✏️ Editar</a> |
-                        <a href="../controller/libroController.php?eliminar=<?= $fila['id'] ?>" onclick="return confirm('¿Eliminar este libro?')">🗑️ Eliminar</a>
+                        <a href="editar.php?id=<?= $fila["id"] ?>">✏️ Editar</a> |
+                        <a href="../controller/libroController.php?eliminar=<?= $fila["id"] ?>" onclick="return confirm('¿Eliminar libro?')">🗑️ Eliminar</a>
                     </td>
                 </tr>
-            <?php endforeach; ?>
+                <?php endforeach; ?>
+            <?php else : ?>
+                <tr><td colspan="7">No hay libros registrados.</td></tr>
+            <?php endif; ?>
         </table>
-        <?php else : ?>
-            <p>No hay libros registrados.</p>
-        <?php endif; ?>
     </div>
 </body>
 </html>
